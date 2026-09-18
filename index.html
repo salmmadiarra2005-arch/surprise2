@@ -410,15 +410,17 @@
       background: var(--letter-bg);
       width: 100%;
       max-width: 550px;
-      max-height: 85vh;
+      max-height: 80vh;
       border-radius: 12px;
       padding: 35px 30px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.2);
       overflow-y: auto;
+      scroll-behavior: smooth;
       position: relative;
       transform: translateY(20px) scale(0.95);
       transition: transform 0.4s ease;
       border: 1px solid rgba(0,0,0,0.05);
+      -webkit-overflow-scrolling: touch;
     }
 
     .modal-overlay.active .modal-card {
@@ -426,20 +428,27 @@
     }
 
     .close-modal {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      background: none;
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      background: rgba(255, 255, 255, 0.8);
       border: none;
-      font-size: 24px;
+      font-size: 28px;
       color: var(--text-main);
       cursor: pointer;
-      opacity: 0.6;
-      transition: opacity 0.2s;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 110;
+      transition: transform 0.2s;
     }
 
     .close-modal:hover {
-      opacity: 1;
+      transform: scale(1.1);
     }
 
     .modal-body {
@@ -475,6 +484,27 @@
       font-family: var(--font-heading);
       font-size: 2rem;
       color: var(--accent-color);
+    }
+
+    /* Bouton pour remonter en haut */
+    .scroll-top-btn {
+      display: block;
+      margin: 25px auto 0 auto;
+      padding: 8px 18px;
+      background: transparent;
+      border: 1px solid var(--accent-color);
+      color: var(--accent-color);
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .scroll-top-btn:hover {
+      background: var(--accent-color);
+      color: #fff;
     }
   </style>
 </head>
@@ -529,8 +559,8 @@
 
   <!-- Modal Affichage Plein Écran -->
   <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
-    <div class="modal-card">
-      <button class="close-modal" onclick="closeModal()">&times;</button>
+    <button class="close-modal" onclick="closeModal()">&times;</button>
+    <div class="modal-card" id="modalCard">
       <div class="modal-body">
         <h2>Joyeux Anniversaire !</h2>
         <div class="subtitle">Joyeux anniversaire mon Kaka Nini ❤️</div>
@@ -546,6 +576,9 @@
           Je t'aime très fort ! 🎉🎂✨
         </p>
         <div class="signature">Ta Salmma ❤️</div>
+        
+        <!-- Bouton pour remonter en haut -->
+        <button class="scroll-top-btn" onclick="scrollToTop()">⬆️ Remonter en haut</button>
       </div>
     </div>
   </div>
@@ -600,6 +633,7 @@
     // Modal
     function openModal() {
       document.getElementById('modalOverlay').classList.add('active');
+      document.getElementById('modalCard').scrollTop = 0;
     }
 
     function closeModal() {
@@ -610,6 +644,14 @@
       if (e.target.id === 'modalOverlay') {
         closeModal();
       }
+    }
+
+    // Fonction pour remonter tout en haut de la carte
+    function scrollToTop() {
+      document.getElementById('modalCard').scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     }
   </script>
 </body>
